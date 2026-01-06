@@ -4,10 +4,10 @@ TableToolButton::TableToolButton(int row) : row_(row) {}
 
 void TableToolButton::onRunClicked()
 {
-  emit clickedRunAt(row_);
+	emit clickedRunAt(row_);
 }
 
 void TableToolButton::onRemoveClicked()
 {
-  emit clickedRemoveAt(row_);
+	emit clickedRemoveAt(row_);
 }

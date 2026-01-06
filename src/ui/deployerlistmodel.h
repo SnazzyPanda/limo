@@ -15,96 +15,96 @@
  */
 class DeployerListModel : public QAbstractTableModel
 {
-  Q_OBJECT
+	Q_OBJECT
 
 public:
-  /*!
-   * \brief Constructor.
-   * \param parent Parent for this model.
-   */
-  explicit DeployerListModel(QObject* parent = nullptr);
+	/*!
+	 * \brief Constructor.
+	 * \param parent Parent for this model.
+	 */
+	explicit DeployerListModel(QObject* parent = nullptr);
 
-  /*! \brief Index of the mod status column. */
-  static constexpr int status_col = 0;
-  /*! \brief Index of the mod name column. */
-  static constexpr int name_col = 1;
-  /*! \brief Index of the mod id column. */
-  static constexpr int id_col = 2;
-  /*! \brief Index of the tags column. */
-  static constexpr int tags_col = 3;
+	/*! \brief Index of the mod status column. */
+	static constexpr int status_col = 0;
+	/*! \brief Index of the mod name column. */
+	static constexpr int name_col = 1;
+	/*! \brief Index of the mod id column. */
+	static constexpr int id_col = 2;
+	/*! \brief Index of the tags column. */
+	static constexpr int tags_col = 3;
 
-  /*! \brief Role representing the activation status of a mod. */
-  static constexpr int mod_status_role = 300;
-  /*! \brief Role representing all tags added to a mod. */
-  static constexpr int mod_tags_role = 301;
-  /*! \brief Rile representing whether ids are references to source mods. */
-  static constexpr int ids_are_source_references_role = 302;
-  /*! \brief Role representing the name of the source mod. */
-  static constexpr int source_mod_name_role = 303;
-  /*! \brief Role representing a list of valid mod actions. */
-  static constexpr int valid_mod_actions_role = 304;
+	/*! \brief Role representing the activation status of a mod. */
+	static constexpr int mod_status_role = 300;
+	/*! \brief Role representing all tags added to a mod. */
+	static constexpr int mod_tags_role = 301;
+	/*! \brief Rile representing whether ids are references to source mods. */
+	static constexpr int ids_are_source_references_role = 302;
+	/*! \brief Role representing the name of the source mod. */
+	static constexpr int source_mod_name_role = 303;
+	/*! \brief Role representing a list of valid mod actions. */
+	static constexpr int valid_mod_actions_role = 304;
 
-  /*!
-   * \brief Returns the horizontal header section names and vertical header section indices.
-   * \param section Target section.
-   * \param orientation Header orientation.
-   * \param role Data role.
-   * \return Name of the section.
-   */
-  QVariant headerData(int section,
-                      Qt::Orientation orientation,
-                      int role = Qt::DisplayRole) const override;
-  /*!
-   * \brief Returns the number of rows to display.
-   * \param parent Parent index.
-   * \return The number of rows.
-   */
-  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-  /*!
-   * \brief Returns the number of columns to display.
-   * \param parent Parent index.
-   * \return The number of columns.
-   */
-  int columnCount(const QModelIndex& parent = QModelIndex()) const override;
-  /*!
-   * \brief Used to access the data stored in this model.
-   *
-   * Returns data depending of the given role and index. Qt standard roles are
-   * used to provide data displayed in views. Custom roles defined in this file
-   * and in the ModListModel header provide access to the raw data.
-   * \param index Holds row and column for which to return data.
-   * \param role Describes type of data to return.
-   * \return The requested data.
-   */
-  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-  /*!
-   * \brief Updates all data stored in this model with the given data.
-   * \param mods Data for all mods managed by this model.
-   */
-  void setDeployerInfo(const DeployerInfo& info);
-  /*!
-   * \brief Only for ReverseDeployers: Whether or not profiles use separate directories.
-   * \return True if separate directories are used.
-   */
-  bool hasSeparateDirs() const;
-  /*!
-   * \brief Only for ReverseDeployers: Whether or not the deployer's ignore list contains files.
-   * \return True if at least one file is ignored.
-   */
-  bool hasIgnoredFiles() const;
-  /*!
-   * \brief Returns whether sorting mods is allowed affect overwrite behavior.
-   *
-   * If this is set to false, sorting will always be safe and only affect how mods are displayed.
-   * \return The safe sorting state.
-   */
-  bool usesUnsafeSorting() const;
+	/*!
+	 * \brief Returns the horizontal header section names and vertical header section indices.
+	 * \param section Target section.
+	 * \param orientation Header orientation.
+	 * \param role Data role.
+	 * \return Name of the section.
+	 */
+	QVariant headerData(int section,
+		Qt::Orientation orientation,
+		int role = Qt::DisplayRole) const override;
+	/*!
+	 * \brief Returns the number of rows to display.
+	 * \param parent Parent index.
+	 * \return The number of rows.
+	 */
+	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+	/*!
+	 * \brief Returns the number of columns to display.
+	 * \param parent Parent index.
+	 * \return The number of columns.
+	 */
+	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+	/*!
+	 * \brief Used to access the data stored in this model.
+	 *
+	 * Returns data depending of the given role and index. Qt standard roles are
+	 * used to provide data displayed in views. Custom roles defined in this file
+	 * and in the ModListModel header provide access to the raw data.
+	 * \param index Holds row and column for which to return data.
+	 * \param role Describes type of data to return.
+	 * \return The requested data.
+	 */
+	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+	/*!
+	 * \brief Updates all data stored in this model with the given data.
+	 * \param mods Data for all mods managed by this model.
+	 */
+	void setDeployerInfo(const DeployerInfo& info);
+	/*!
+	 * \brief Only for ReverseDeployers: Whether or not profiles use separate directories.
+	 * \return True if separate directories are used.
+	 */
+	bool hasSeparateDirs() const;
+	/*!
+	 * \brief Only for ReverseDeployers: Whether or not the deployer's ignore list contains files.
+	 * \return True if at least one file is ignored.
+	 */
+	bool hasIgnoredFiles() const;
+	/*!
+	 * \brief Returns whether sorting mods is allowed affect overwrite behavior.
+	 *
+	 * If this is set to false, sorting will always be safe and only affect how mods are displayed.
+	 * \return The safe sorting state.
+	 */
+	bool usesUnsafeSorting() const;
 
 private:
-  /*! \brief Contains all mods managed by this model. */
-  DeployerInfo deployer_info_;
-  /*! \brief Maps mod ids to the color used to display their names. */
-  std::map<int, QBrush> text_colors_;
-  /*! \brief For every mod: A vector containing every tag added to that mod. */
-  std::vector<std::vector<std::string>> tags_;
+	/*! \brief Contains all mods managed by this model. */
+	DeployerInfo deployer_info_;
+	/*! \brief Maps mod ids to the color used to display their names. */
+	std::map<int, QBrush> text_colors_;
+	/*! \brief For every mod: A vector containing every tag added to that mod. */
+	std::vector<std::vector<std::string>> tags_;
 };

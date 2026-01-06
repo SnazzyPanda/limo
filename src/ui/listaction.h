@@ -14,27 +14,27 @@
  */
 class ListAction : public QAction
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  /*!
-   * \brief Constructs a new action with the given index.
-   * \param index Target index.
-   * \param parent Parent of this object.
-   */
-  explicit ListAction(int index, QObject* parent = nullptr);
+	/*!
+	 * \brief Constructs a new action with the given index.
+	 * \param index Target index.
+	 * \param parent Parent of this object.
+	 */
+	explicit ListAction(int index, QObject* parent = nullptr);
 
 private:
-  /*! \brief Index belonging to this action. */
-  int index_;
+	/*! \brief Index belonging to this action. */
+	int index_;
 
 private slots:
-  /*! \brief Emits \ref triggeredAt. */
-  void onTriggeredAt();
+	/*! \brief Emits \ref triggeredAt. */
+	void onTriggeredAt();
 
 signals:
-  /*!
-   * \brief Emits this action's index.
-   * \param index The index.
-   */
-  void triggeredAt(int index);
+	/*!
+	 * \brief Emits this action's index.
+	 * \param index The index.
+	 */
+	void triggeredAt(int index);
 };
