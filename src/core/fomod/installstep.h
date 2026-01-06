@@ -19,11 +19,11 @@ namespace fomod
 /*! \brief A step during installation. */
 struct InstallStep
 {
-  /*! \brief Step name. */
-  std::string name;
-  /*! \brief Step description. */
-  Dependency dependencies;
-  /*! \brief Sets of choices displayed during this step. */
-  std::vector<PluginGroup> groups;
+	/*! \brief Step name. */
+	std::string name;
+	/*! \brief Step description. */
+	Dependency dependencies;
+	/*! \brief Sets of choices displayed during this step. */
+	std::vector<PluginGroup> groups;
 };
 }
