@@ -24,7 +24,9 @@ LootDeployer::LootDeployer(const sfs::path& source_path,
 	deploy_mode_ = copy;
 	enable_unsafe_sorting_ = true;
 	if(!perform_init)
+	{
 		return;
+	}
 	type_ = "Loot Deployer";
 	is_autonomous_ = true;
 	plugin_regex_ = R"(.*\.[eE][sS][pPlLmM]$)";
@@ -32,27 +34,36 @@ LootDeployer::LootDeployer(const sfs::path& source_path,
 	config_file_name_ = ".lmmconfig";
 	tags_file_name_ = ".loot_tags";
 	source_mods_file_name_ = ".lmm_mod_sources";
+
 	updateAppType();
 	setupPluginFiles();
 	loadPlugins();
 	updatePlugins();
+
 	if(sfs::exists(dest_path_ / config_file_name_))
+	{
 		loadSettingsPrivate();
+	}
 	if(init_tags)
+	{
 		readPluginTags();
+	}
 	readSourceMods();
 }
 
 void LootDeployer::unDeploy(std::optional<ProgressNode*> progress_node)
 {
-	const std::string loadorder_backup_path =
-		dest_path_ / ("." + app_plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
-	const std::string plugin_backup_path =
-		dest_path_ / ("." + plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
+	const std::string loadorder_backup_path = dest_path_ / ("." + app_plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
+	const std::string plugin_backup_path = dest_path_ / ("." + plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
+
 	if(pu::exists(loadorder_backup_path) && !pu::exists(plugin_backup_path))
+	{
 		sfs::remove(loadorder_backup_path);
+	}
 	else if(!pu::exists(loadorder_backup_path) && pu::exists(plugin_backup_path))
+	{
 		sfs::remove(plugin_backup_path);
+	}
 	else if(!pu::exists(loadorder_backup_path) && !pu::exists(plugin_backup_path))
 	{
 		sfs::copy(dest_path_ / app_plugin_file_name_, loadorder_backup_path);
@@ -95,13 +106,19 @@ void LootDeployer::addProfile(int source)
 void LootDeployer::removeProfile(int profile)
 {
 	if(profile >= num_profiles_ || profile < 0)
+	{
 		return;
+	}
 	std::string plugin_file = "." + plugin_file_name_ + EXTENSION + std::to_string(profile);
 	std::string loadorder_file = "." + app_plugin_file_name_ + EXTENSION + std::to_string(profile);
 	if(profile == current_profile_)
+	{
 		setProfile(0);
+	}
 	else if(profile < current_profile_)
+	{
 		setProfile(current_profile_ - 1);
+	}
 	sfs::remove(dest_path_ / plugin_file);
 	sfs::remove(dest_path_ / loadorder_file);
 	num_profiles_--;
@@ -111,7 +128,9 @@ void LootDeployer::removeProfile(int profile)
 void LootDeployer::setProfile(int profile)
 {
 	if(profile >= num_profiles_ || profile < 0 || profile == current_profile_)
+	{
 		return;
+	}
 	if(!sfs::exists(dest_path_ / plugin_file_name_) ||
 		!sfs::exists(dest_path_ / app_plugin_file_name_) ||
 		!sfs::exists(dest_path_ / ("." + plugin_file_name_ + EXTENSION + std::to_string(profile))) ||
@@ -120,6 +139,7 @@ void LootDeployer::setProfile(int profile)
 		resetSettings();
 		return;
 	}
+
 	sfs::rename(dest_path_ / plugin_file_name_,
 		dest_path_ /
 		("." + plugin_file_name_ + EXTENSION + std::to_string(current_profile_)));
@@ -130,6 +150,7 @@ void LootDeployer::setProfile(int profile)
 		dest_path_ / plugin_file_name_);
 	sfs::rename(dest_path_ / ("." + app_plugin_file_name_ + EXTENSION + std::to_string(profile)),
 		dest_path_ / app_plugin_file_name_);
+
 	current_profile_ = profile;
 	saveSettings();
 	loadPlugins();
@@ -137,22 +158,29 @@ void LootDeployer::setProfile(int profile)
 }
 
 std::unordered_set<int> LootDeployer::getModConflicts(int mod_id,
-		std::optional<ProgressNode*> progress_node)
+	std::optional<ProgressNode*> progress_node)
 {
 	std::unordered_set<int> conflicts{ mod_id };
 	auto loot_handle = loot::CreateGameHandle(app_type_, source_path_, dest_path_);
 	std::vector<sfs::path> plugin_paths;
 	plugin_paths.reserve(plugins_.size());
 	for(const auto& [path, s] : plugins_)
+	{
 		plugin_paths.emplace_back(source_path_ / path);
+	}
+
 	loot_handle->LoadPlugins(plugin_paths, false);
 	auto plugin = loot_handle->GetPlugin(plugins_[mod_id].first);
 	for(int i = 0; i < plugins_.size(); i++)
 	{
 		if(i == mod_id)
+		{
 			continue;
+		}
 		if(loot_handle->GetPlugin(plugins_[i].first)->DoRecordsOverlap(*plugin))
+		{
 			conflicts.insert(i);
+		}
 	}
 	return conflicts;
 }
@@ -169,43 +197,60 @@ void LootDeployer::sortModsByConflicts(std::optional<ProgressNode*> progress_nod
 	}
 	updateMasterList();
 	if(progress_node)
+	{
 		(*progress_node)->child(0).advance();
+	}
 
 	sfs::path master_list_path = dest_path_ / "masterlist.yaml";
 	if(!sfs::exists(master_list_path))
+	{
 		throw std::runtime_error("Could not find masterlist.yaml at '" + master_list_path.string() +
 			"'\n.Try to update the URL in the " +
 			"settings. Alternatively, you can manually download the " +
 			"file and place it in '" + dest_path_.string() + "'.\nYou can " +
 			"disable auto updates in '" +
 			(dest_path_ / config_file_name_).string() + "'.");
+	}
+
 	auto loot_handle = loot::CreateGameHandle(app_type_, source_path_, dest_path_);
 	sfs::path user_list_path(dest_path_ / "userlist.yaml");
 	if(!sfs::exists(user_list_path))
+	{
 		user_list_path = "";
+	}
 	sfs::path prelude_path(dest_path_ / "prelude.yaml");
 	if(!sfs::exists(prelude_path))
+	{
 		prelude_path = "";
+	}
 	loot_handle->GetDatabase().LoadMasterlistWithPrelude(master_list_path, prelude_path);
 	if(!sfs::exists(user_list_path))
+	{
 		loot_handle->GetDatabase().LoadUserlist(user_list_path);
+	}
 
 	if(progress_node)
+	{
 		(*progress_node)->child(1).advance();
+	}
 
 	std::vector<sfs::path> plugin_paths;
 	std::vector<std::string> plugin_file_names;
 	plugin_paths.reserve(plugins_.size());
 	plugin_file_names.reserve(plugins_.size());
+
 	for(const auto& [path, s] : plugins_)
 	{
 		plugin_paths.emplace_back(source_path_ / path);
 		plugin_file_names.emplace_back(path);
 	}
+
 	loot_handle->LoadPlugins(plugin_paths, false);
 	auto sorted_plugins = loot_handle->SortPlugins(plugin_file_names);
 	if(progress_node)
+	{
 		(*progress_node)->child(2).advance();
+	}
 
 	std::vector<std::pair<std::string, bool>> new_plugins;
 	new_plugins.reserve(plugins_.size());
@@ -214,12 +259,16 @@ void LootDeployer::sortModsByConflicts(std::optional<ProgressNode*> progress_nod
 	int num_master_plugins = 0;
 	int num_standard_plugins = 0;
 	tags_.clear();
+
 	for(const auto& plugin : sorted_plugins)
 	{
 		auto iter = str::find_if(plugins_, [plugin](const auto& p) { return p.first == plugin; });
 		bool enabled = true;
 		if(iter != plugins_.end())
+		{
 			enabled = iter->second;
+		}
+
 		const auto cur_plugin = loot_handle->GetPlugin(plugin);
 		if(cur_plugin->IsLightPlugin())
 		{
@@ -236,25 +285,32 @@ void LootDeployer::sortModsByConflicts(std::optional<ProgressNode*> progress_nod
 			num_standard_plugins++;
 			tags_.push_back({ STANDARD_PLUGIN });
 		}
+
 		new_plugins.emplace_back(plugin, enabled);
 		auto masters = cur_plugin->GetMasters();
 		for(const auto& master : masters)
 		{
 			if(!pu::pathExists(master, source_path_) && enabled)
-				log_(Log::LOG_WARNING,
-					"LOOT: Plugin '" + master + "' is missing but required" + " for '" + plugin + "'");
+			{
+				log_(Log::LOG_WARNING, "LOOT: Plugin '" + master + "' is missing but required" + " for '" + plugin + "'");
+			}
 		}
 		auto meta_data = loot_handle->GetDatabase().GetPluginMetadata(plugin);
 		if(!meta_data)
+		{
 			continue;
+		}
 		auto requirements = meta_data->GetRequirements();
 		for(const auto& req : requirements)
 		{
 			std::string file = static_cast<std::string>(req.GetName());
 			if(!pu::pathExists(file, source_path_))
+			{
 				log_(Log::LOG_WARNING, "LOOT: Requirement '" + file + "' not met for '" + plugin + "'");
+			}
 		}
 	}
+
 	log_(Log::LOG_DEBUG, std::format("LOOT: App type {}", static_cast<int>(app_type_)));
 	log_(Log::LOG_INFO,
 		std::format("LOOT: Total Plugins: {}, Master: {}, Standard: {}, Light: {}",
@@ -262,12 +318,17 @@ void LootDeployer::sortModsByConflicts(std::optional<ProgressNode*> progress_nod
 			num_master_plugins,
 			num_standard_plugins,
 			num_light_plugins));
+
 	if(enable_unsafe_sorting_)
+	{
 		plugins_ = new_plugins;
+	}
 	writePluginTags();
 	writePlugins();
 	if(progress_node)
+	{
 		(*progress_node)->child(3).advance();
+	}
 }
 
 void LootDeployer::cleanup()
@@ -275,8 +336,7 @@ void LootDeployer::cleanup()
 	for(int i = 0; i < num_profiles_; i++)
 	{
 		sfs::path plugin_path = dest_path_ / ("." + plugin_file_name_ + EXTENSION + std::to_string(i));
-		sfs::path load_order_path =
-			dest_path_ / ("." + app_plugin_file_name_ + EXTENSION + std::to_string(i));
+		sfs::path load_order_path = dest_path_ / ("." + app_plugin_file_name_ + EXTENSION + std::to_string(i));
 		sfs::remove(plugin_path);
 		sfs::remove(load_order_path);
 	}
@@ -287,9 +347,11 @@ void LootDeployer::cleanup()
 
 std::map<std::string, int> LootDeployer::getAutoTagMap()
 {
-	return { { LIGHT_PLUGIN, num_light_plugins_ },
+	return {
+		{ LIGHT_PLUGIN, num_light_plugins_ },
 		{ MASTER_PLUGIN, num_master_plugins_ },
-		{ STANDARD_PLUGIN, num_standard_plugins_ } };
+		{ STANDARD_PLUGIN, num_standard_plugins_ }
+	};
 }
 
 void LootDeployer::writePlugins() const
@@ -299,11 +361,15 @@ void LootDeployer::writePlugins() const
 	std::ofstream plugins_file;
 	plugins_file.open(dest_path_ / app_plugin_file_name_);
 	if(!plugins_file.is_open())
+	{
 		throw std::runtime_error("Could not open " + app_plugin_file_name_ + "!");
+	}
 	for(const auto& [name, enabled] : plugins_)
 	{
 		if(enabled)
+		{
 			plugins_file << name << "\n";
+		}
 	}
 	plugins_file.close();
 
@@ -314,9 +380,9 @@ void LootDeployer::writePlugins() const
 			const auto& [name, enabled] = pair;
 			std::tm tm = { 0, static_cast<int>(i), 0, 1, 0, 100 };
 			tm.tm_isdst = -1;
-			std::filesystem::file_time_type time_point =
-				std::chrono::file_clock::from_sys(std::chrono::system_clock::from_time_t(std::mktime(&tm)));
+			std::filesystem::file_time_type time_point = std::chrono::file_clock::from_sys(std::chrono::system_clock::from_time_t(std::mktime(&tm)));
 			const sfs::path plugin_path = source_path_ / name;
+
 			if(sfs::exists(plugin_path))
 			{
 				sfs::last_write_time(plugin_path, time_point);
@@ -340,7 +406,9 @@ void LootDeployer::saveSettings() const
 	sfs::path settings_file_path = dest_path_ / config_file_name_;
 	std::ofstream file(settings_file_path, std::fstream::binary);
 	if(!file.is_open())
+	{
 		throw std::runtime_error("Error: Could not write to \"" + settings_file_path.string() + "\".");
+	}
 	file << settings;
 	file.close();
 }
@@ -369,7 +437,9 @@ void LootDeployer::updateAppType()
 			}
 			auto file_name = pu::pathExists(plugin_file_name_, dest_path_);
 			if(file_name)
+			{
 				plugin_file_name_ = *file_name;
+			}
 			return;
 		}
 	}
@@ -379,19 +449,21 @@ void LootDeployer::updateAppType()
 void LootDeployer::updateMasterList()
 {
 	if(!auto_update_lists_)
+	{
 		return;
+	}
 	const auto cur_time = std::chrono::system_clock::now();
-	const std::chrono::time_point<std::chrono::system_clock> update_time{
-		std::chrono::seconds(list_download_time_)};
+	const std::chrono::time_point<std::chrono::system_clock> update_time{std::chrono::seconds(list_download_time_)};
 	const auto one_hour_ago = cur_time - std::chrono::hours(1);
 	if(update_time >= one_hour_ago && sfs::exists(dest_path_ / "masterlist.yaml"))
+	{
 		return;
+	}
 
 	downloadList(LIST_URLS.at(app_type_), "masterlist.yaml");
 	downloadList(PRELUDE_URL, "prelude.yaml");
 
-	list_download_time_ =
-		std::chrono::duration_cast<std::chrono::seconds>(cur_time.time_since_epoch()).count();
+	list_download_time_ = std::chrono::duration_cast<std::chrono::seconds>(cur_time.time_since_epoch()).count();
 	saveSettings();
 }
 
@@ -403,7 +475,9 @@ void LootDeployer::resetSettings()
 void LootDeployer::setupPluginFiles()
 {
 	if(sfs::exists(dest_path_ / plugin_file_name_) && sfs::exists(dest_path_ / app_plugin_file_name_))
+	{
 		return;
+	}
 	updatePlugins();
 }
 
@@ -426,10 +500,13 @@ void LootDeployer::readPluginTags()
 	num_standard_plugins_ = 0;
 	std::ifstream file(tag_file_path, std::fstream::binary);
 	if(!file.is_open())
+	{
 		throw std::runtime_error("Error: Could not read from \"" + tag_file_path.string() + "\".");
+	}
 	Json::Value json;
 	file >> json;
 	file.close();
+
 	for(int i = 0; i < json.size(); i++)
 	{
 		tags_.push_back({});
@@ -438,15 +515,23 @@ void LootDeployer::readPluginTags()
 			const std::string tag = json[i][j].asString();
 			tags_[i].push_back(tag);
 			if(tag == LIGHT_PLUGIN)
+			{
 				num_light_plugins_++;
+			}
 			else if(tag == MASTER_PLUGIN)
+			{
 				num_master_plugins_++;
+			}
 			else if(tag == STANDARD_PLUGIN)
+			{
 				num_standard_plugins_++;
+			}
 		}
 	}
 	if(tags_.size() != plugins_.size())
+	{
 		updatePluginTagsPrivate();
+	}
 }
 
 void LootDeployer::downloadList(std::string url, const std::string& file_name)
@@ -454,8 +539,9 @@ void LootDeployer::downloadList(std::string url, const std::string& file_name)
 	const std::string tmp_file_name = file_name + ".tmp";
 	std::ofstream fstream(dest_path_ / tmp_file_name, std::ios::binary);
 	if(!fstream.is_open())
-		throw std::runtime_error("Failed to update " + file_name + ": Could not write to: \"" +
-			dest_path_.string() + "\".");
+	{
+		throw std::runtime_error("Failed to update " + file_name + ": Could not write to: \"" + dest_path_.string() + "\".");
+	}
 
 	auto pos = url.find(" ");
 	while(pos != std::string::npos)
@@ -463,6 +549,7 @@ void LootDeployer::downloadList(std::string url, const std::string& file_name)
 		url.replace(pos, 1, "%20");
 		pos = url.find(" ");
 	}
+
 	cpr::Response response = cpr::Download(fstream, cpr::Url{ url });
 	if(response.status_code != 200)
 	{
@@ -480,14 +567,17 @@ void LootDeployer::downloadList(std::string url, const std::string& file_name)
 
 void LootDeployer::restoreUndeployBackupIfExists()
 {
-	const std::string loadorder_backup_path =
-		dest_path_ / ("." + app_plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
-	const std::string plugin_backup_path =
-		dest_path_ / ("." + plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
+	const std::string loadorder_backup_path = dest_path_ / ("." + app_plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
+	const std::string plugin_backup_path = dest_path_ / ("." + plugin_file_name_ + UNDEPLOY_BACKUP_EXTENSION);
+
 	if(pu::exists(loadorder_backup_path) && !pu::exists(plugin_backup_path))
+	{
 		sfs::remove(loadorder_backup_path);
+	}
 	else if(!pu::exists(loadorder_backup_path) && pu::exists(plugin_backup_path))
+	{
 		sfs::remove(plugin_backup_path);
+	}
 	else if(sfs::exists(loadorder_backup_path) && sfs::exists(plugin_backup_path))
 	{
 		log_(Log::LOG_DEBUG, std::format("Deployer '{}': Restoring undeploy backup.", name_));
@@ -517,7 +607,7 @@ void LootDeployer::loadSettingsPrivate()
 	file >> settings;
 	file.close();
 	if(!settings.isMember("num_profiles") || !settings.isMember("current_profile") ||
-		 !settings.isMember("list_download_time") || !settings.isMember("auto_update_master_list"))
+		!settings.isMember("list_download_time") || !settings.isMember("auto_update_master_list"))
 	{
 		resetSettingsPrivate();
 		return;
@@ -542,8 +632,12 @@ void LootDeployer::updatePluginTagsPrivate()
 	auto loot_handle = loot::CreateGameHandle(app_type_, source_path_, dest_path_);
 	std::vector<sfs::path> plugin_paths;
 	plugin_paths.reserve(plugins_.size());
+
 	for(const auto& [path, s] : plugins_)
+	{
 		plugin_paths.emplace_back(source_path_ / path);
+	}
+
 	loot_handle->LoadPlugins(plugin_paths, false);
 	num_light_plugins_ = 0;
 	num_master_plugins_ = 0;

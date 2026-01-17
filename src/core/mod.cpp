@@ -38,13 +38,21 @@ Mod::Mod(const Json::Value& json)
 {
 	remote_mod_id = -1;
 	if(json.isMember("remote_mod_id"))
+	{
 		remote_mod_id = json["remote_mod_id"].asInt64();
+	}
+
 	remote_file_id = -1;
 	if(json.isMember("remote_file_id"))
+	{
 		remote_file_id = json["remote_file_id"].asInt64();
+	}
 	remote_type = ImportModInfo::RemoteType::local;
 	if(json.isMember("remote_type"))
+	{
 		remote_type = static_cast<ImportModInfo::RemoteType>(json["remote_type"].asInt());
+	}
+
 	id = json["id"].asInt();
 	name = json["name"].asString();
 	version = json["version"].asString();
