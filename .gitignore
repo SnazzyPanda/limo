@@ -96,3 +96,6 @@ local_scripts
 
 # Nix
 result
+
+# self-contained, local flatpak repo for builds
+build-flatpak-repo buil

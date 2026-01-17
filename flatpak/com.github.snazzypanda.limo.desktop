@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Comment=Mod manager with LOOT integration
+Name=Limo
+Categories=Utility;FileTools;
+Icon=com.github.SnazzyPanda.limo
+MimeType=x-scheme-handler/nxm;
+Exec=limo %u
+Terminal=false

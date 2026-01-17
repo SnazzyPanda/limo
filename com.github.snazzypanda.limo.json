@@ -1,0 +1,392 @@
+{
+  "app-id": "com.github.snazzypanda.limo",
+  "runtime": "org.kde.Platform",
+  "runtime-version": "5.15-24.08",
+  "sdk": "org.kde.Sdk",
+  "sdk-extensions" :
+  [
+    "org.freedesktop.Sdk.Extension.rust-stable",
+    "org.freedesktop.Sdk.Extension.llvm18"
+  ],
+  "build-options":
+  {
+     "append-path": "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm18/bin",
+        "env": {
+            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": "clang",
+            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
+            "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER": "clang",
+            "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold"
+        }
+  },
+  "command": "limo",
+  "finish-args":
+  [
+    "--share=ipc",
+    "--device=dri",
+    "--share=network",
+    "--socket=wayland",
+    "--socket=fallback-x11",
+    "--filesystem=home",
+    "--filesystem=/mnt",
+    "--filesystem=/media",
+    "--filesystem=/run/media",
+    "--filesystem=home/.var/app/com.valvesoftware.Steam",
+    "--talk-name=org.freedesktop.Flatpak",
+    "--system-talk-name=org.freedesktop.UDisks2"
+  ],
+  "cleanup":
+  [
+    "/share/doc",
+    "/share/man",
+    "/share/pkgconfig",
+    "/include",
+    "*.a",
+    "/lib/cmake",
+    "/lib/pkgconfig",
+    "/local"
+  ],
+  "modules":
+  [
+    {
+      "name": "libarchive",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DENABLE_TEST=OFF",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/libarchive/libarchive.git",
+          "tag": "v3.7.4"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "jsoncpp",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DJSONCPP_WITH_TESTS=OFF",
+        "-DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DBUILD_OBJECT_LIBS=OFF"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/open-source-parsers/jsoncpp.git",
+          "tag": "1.9.5"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "pugixml",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/zeux/pugixml.git",
+          "tag": "v1.14"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "cpr",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCPR_USE_SYSTEM_CURL=ON",
+        "-DBUILD_SHARED_LIBS=OFF"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/libcpr/cpr.git",
+          "tag": "1.11.2"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "libtbb",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DTBB_TEST=OFF",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DTBB_STRICT=OFF"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/oneapi-src/oneTBB.git",
+          "tag": "v2021.13.0"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "boost",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBOOST_INCLUDE_LIBRARIES=algorithm;crc;graph"
+      ],
+
+      "sources":
+      [
+        {
+          "type": "archive",
+          "url": "https://github.com/boostorg/boost/releases/download/boost-1.85.0/boost-1.85.0-cmake.tar.xz",
+          "sha256": "0a9cc56ceae46986f5f4d43fe0311d90cf6d2fa9028258a95cab49ffdacf92ad"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "cbindgen",
+      "buildsystem": "simple",
+      "build-options":
+      {
+        "env":
+        {
+          "CARGO_HOME": "/run/build/cbindgen/cargo"
+        }
+      },
+      "build-commands":
+      [
+          "cargo --offline fetch --manifest-path Cargo.toml --verbose",
+          "cargo --offline build --release --verbose",
+          "install -Dm755 ./target/release/cbindgen -t /app/bin/"
+      ],
+      "sources":
+      [
+          {
+            "type": "git",
+            "url": "https://github.com/mozilla/cbindgen.git",
+            "tag": "0.28.0"
+          },
+          "dependencies/cbindgen-sources.json"
+      ],
+      "cleanup":
+      [
+
+      ]
+    },
+    {
+      "name": "yamlcpp",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DYAML_MSVC_SHARED_RT=ON",
+        "-DYAML_CPP_BUILD_CONTRIB=OFF",
+        "-DYAML_CPP_BUILD_TOOLS=OFF",
+        "-DYAML_BUILD_SHARED_LIBS=OFF",
+        "-DYAML_CPP_BUILD_TESTS=OFF"
+      ],
+      "sources":
+      [
+        {
+          "type": "archive",
+          "path": "dependencies/archives/yaml-cpp-0.8.0-merge-key-support.2.tar.gz"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "spdlog",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DSPDLOG_BUILD_SHARED=OFF",
+        "-DSPDLOG_BUILD_PIC=ON"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/gabime/spdlog.git",
+          "tag": "v1.15.1"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "fmt",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_SHARED_LIBS=OFF",
+        "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
+        "-DFMT_TEST=OFF",
+        "-DFMT_DOC=OFF"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/fmtlib/fmt.git",
+          "tag": "11.2.0"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "libloot",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DLIBLOOT_BUILD_TESTS=OFF",
+        "-DLIBLOOT_INSTALL_DOCS=OFF",
+        "-DESPLUGIN_URL=/run/build/libloot/6.1.3.tar.gz",
+        "-DLIBLOADORDER_URL=/run/build/libloot/18.4.0.tar.gz",
+        "-DLOOT_CONDITION_INTERPRETER_URL=/run/build/libloot/5.3.2.tar.gz"
+      ],
+      "build-options":
+      {
+        "env":
+        {
+          "CARGO_HOME": "/run/build/libloot/cargo"
+        }
+      },
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/loot/libloot.git",
+          "tag": "0.27.0"
+        },
+        {
+          "type": "patch",
+          "path": "patches/libloot/libloot-0.27.0-cmake.patch"
+        },
+        {
+          "type": "file",
+          "url": "https://github.com/Ortham/esplugin/archive/refs/tags/6.1.3.tar.gz",
+          "sha256": "d11373b9108036e8d8453ff77000ae2961f9d1243c99c42dd732dad0c83d8618"
+        },
+        "dependencies/sources-esplugin-6.1.3.json",
+        {
+          "type": "file",
+          "url": "https://github.com/Ortham/libloadorder/archive/refs/tags/18.4.0.tar.gz",
+          "sha256": "c83f1f48829e013f2634041b62fed8c4957fb7469a401250b3793953ed3c3d2c"
+        },
+        "dependencies/sources-libloadorder-18.4.0.json",
+        {
+          "type": "file",
+          "url": "https://github.com/loot/loot-condition-interpreter/archive/refs/tags/5.3.2.tar.gz",
+          "sha256": "11a2c62898f6450cdae6db607c63fd7898f62bf67d4874b7ceed3d3693331af3"
+        },
+        "dependencies/sources-loot-condition-interpreter-5.3.2.json",
+        {
+            "type": "file",
+            "url": "https://github.com/fmtlib/fmt/archive/refs/tags/11.2.0.tar.gz",
+            "sha256": "bc23066d87ab3168f27cef3e97d545fa63314f5c79df5ea444d41d56f962c6af"
+        },
+        {
+            "type": "file",
+            "url": "https://github.com/gabime/spdlog/archive/v1.15.3.tar.gz",
+            "sha256": "15a04e69c222eb6c01094b5c7ff8a249b36bb22788d72519646fb85feb267e67"
+        },
+        {
+            "type": "file",
+            "url": "https://github.com/loot/yaml-cpp/archive/0.8.0+merge-key-support.3.tar.gz",
+            "sha256": "e2067f1ab8f658aeb8a8795fd0e06a753b4150b9352cae047280e659078dd44f"
+        }
+      ]
+    },
+    {
+      "name": "unrar",
+      "no-autogen": true,
+      "no-make-install": true,
+      "make-args":
+      [
+        "lib"
+      ],
+      "post-install":
+      [
+        "install -D dll.hpp /app/include/unrar/dll.hpp",
+        "install -D libunrar.a /app/lib/libunrar.a"
+      ],
+      "sources":
+      [
+        {
+          "type": "git",
+          "url": "https://github.com/aawc/unrar.git",
+          "tag": "v7.0.9"
+        }
+      ],
+      "cleanup":
+      [
+        "*"
+      ]
+    },
+    {
+      "name": "limo",
+      "buildsystem": "cmake-ninja",
+      "config-opts":
+      [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DIS_FLATPAK=ON"
+      ],
+      "sources":
+      [
+        {
+          "type": "dir",
+          "path": "."
+        }
+      ]
+    }
+  ]
+}
