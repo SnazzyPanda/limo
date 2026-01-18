@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(Limo VERSION 1.2.2 LANGUAGES CXX)
+project(Limo VERSION 1.3.0 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -347,26 +347,28 @@ endif()
 configure_file(src/core/consts.h.in
                ${PROJECT_SOURCE_DIR}/src/core/consts.h)
 
-add_executable(Limo
+#add_executable(Limo
+#    ${PROJECT_SOURCES})
+add_executable(limo
     ${PROJECT_SOURCES})
 
-target_include_directories(Limo PRIVATE ${PROJECT_SOURCE_DIR}/src)
+target_include_directories(limo PRIVATE ${PROJECT_SOURCE_DIR}/src)
 
-target_link_libraries(Limo
+target_link_libraries(limo
     PRIVATE core
     PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
     PRIVATE Qt${QT_VERSION_MAJOR}::Svg
     PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 
-install(PROGRAMS ${CMAKE_BINARY_DIR}/Limo
+install(PROGRAMS ${CMAKE_BINARY_DIR}/limo
     DESTINATION bin RENAME limo)
 
 if(IS_FLATPAK)
-    install(FILES flatpak/io.github.limo_app.limo.png
+    install(FILES flatpak/com.github.snazzypanda.limo.png
             DESTINATION /app/share/icons/hicolor/512x512/apps)
-    install(FILES flatpak/io.github.limo_app.limo.metainfo.xml
-            DESTINATION /app/share/metainfo)
-    install(FILES flatpak/io.github.limo_app.limo.desktop
+#    install(FILES flatpak/com.github.snazzypanda.limo.metainfo.xml
+#            DESTINATION /app/share/metainfo)
+    install(FILES flatpak/com.github.snazzypanda.limo.desktop
             DESTINATION /app/share/applications)
     install(DIRECTORY steam_app_configs
             DESTINATION /app/share/limo)

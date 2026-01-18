@@ -1,4 +1,19 @@
-<h1 align="center">Limo <img src="resources/logo.png" alt="logo" width="40"/></h1>
+<h1 align="center"><img src="resources/logo.png" alt="logo" width="40"/> Limo - <i>Life Support Edition</i></h1>
+
+<h2 style="text-align:center;">⚠️ Life Support ⚠️</h2>
+
+- Expect no additional support or changes.
+- Do not report any issues you encounter using this app to the original [Limo repository](https://github.com/limo-app/limo) (unless you have verified it affects that project as well).
+- You are free to open issues/pull-requests, but expect them to never be addressed.
+- I have very little C++ experience or knowledge. If any changes or fixes are made, expect them to be both janky and buggy.
+
+### Migrating from the io.github.limo_app.limo Flatpak
+
+To copy you existing setup, you will want to copy the `Limo.conf` file from `~/.var/app/io.github.limo_app.limo/config/Limo.conf` to `~/.var/app/com.github.snazzypanda.limo/config/Limo.conf`.
+
+⚠️ Some changes made in this project will allow you to do things that are incompatible with going back to the original Limo app!
+
+<hr>
 
 General purpose mod manager primarily developed for Linux with support for the [NexusMods](https://www.nexusmods.com/) API and [LOOT](https://loot.github.io/).
 
@@ -26,7 +41,7 @@ General purpose mod manager primarily developed for Linux with support for the [
 - OpenMW support:
     - Manages plugin and archive (.bsa) files
     - Supports LOOT
-    
+
 ## How Limo works
 
 There are two basic concepts you should know in order to understand how Limo works:
@@ -41,10 +56,10 @@ you to quickly change which mods should be enabled or win conflicts, should ther
 In order to actually change the game you are trying to mod, there needs to be a mechanism which takes mods from the
 *Staging Directory* and puts them into the game's directory. This is what *Deployers* do. Each *Deployer* manages
 however many mods you assign to it and then links them into its *Target Directory*, which is the game's directory.
-If there are any conflicts between mods, the mod lower in the *Deployer's* load order will win. Should any files in 
+If there are any conflicts between mods, the mod lower in the *Deployer's* load order will win. Should any files in
 the *Target Directory* need to be overwritten, a backup is automatically created and restored when the mod is no
 longer active.
-    
+
 ***For a guide on how to use Limo, refer to the [wiki](https://github.com/limo-app/limo/wiki). This will help you even if you are not modding Skyrim.***
 
 ## Installation
@@ -97,7 +112,7 @@ sudo apt install \
 		cargo \
 		cbindgen \
 		catch2 \
-		doxygen		
+		doxygen
 ```
 
 #### Clone this repository:
@@ -123,7 +138,7 @@ mkdir build
 cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
 cmake --build build
 ```
- 
+
 #### (Optional) Run the tests:
 
 ```
@@ -137,6 +152,22 @@ ctest --test-dir build
 ```
 doxygen src/lmm_Doxyfile
 ```
+
+### Building a Flatpak Locally
+
+To simplify the process, there is a `build-flatpak.sh` script to create a `.flatpak` file locally. To build the flatpak, you will need to have flatpak and flatpak-builder installed, as well as the following flatpak packages:
+
+- `org.kde.Sdk/x86_64/5.15-24.08`
+- `org.kde.Platform/x86_64/5.15-24.08`
+- `org.freedesktop.Sdk.Extension.llvm18/x86_64/24.08`
+- `org.freedesktop.Sdk.Extension.rust-stable/x86_64/24.08`
+
+You can use this command to get them all:
+```
+flatpak install flathub org.kde.Sdk/x86_64/5.15-24.08 org.kde.Platform/x86_64/5.15-24.08 org.freedesktop.Sdk.Extension.llvm18/x86_64/24.08 org.freedesktop.Sdk.Extension.rust-stable/x86_64/24.08
+```
+
+When successfully built, there should be a `.flatpak` under the `build/` directory, currently configured to be `build/com.github.snazzypanda.limo.flatpak`.
 
 ## Usage Notes
 
@@ -154,7 +185,7 @@ From version 1.0.7 onwards, Limo supports specialized deployer and auto tag impo
 
 The Flatpak version of Limo is the officially supported version. There is no reason to use the AUR version of Limo, unless you like the instant download initialization (not the download speed) when downloading via mod manager on NexusMods, and early access to new features such as Reverse Deployer (unreleased as of 1.0.7). If you decided to use the AUR version, please don't spam and harass the main developer.
 
-When you first use the AUR version of Limo, you'll notice that the UI is slightly different than the Flatpak version. ***Moreover, you'll notice that when importing games from steam such as Skyrim SE, the deployers are not pointing to the right directory, hence, one should read Limo's [Wiki](https://github.com/limo-app/limo/wiki) to properly configure them.*** 
+When you first use the AUR version of Limo, you'll notice that the UI is slightly different than the Flatpak version. ***Moreover, you'll notice that when importing games from steam such as Skyrim SE, the deployers are not pointing to the right directory, hence, one should read Limo's [Wiki](https://github.com/limo-app/limo/wiki) to properly configure them.***
 
 #### Here's a quick glance of what deployer you should create and where it should point to.
 
@@ -186,35 +217,35 @@ Skyrim SE, and move it to the *steam_app_configs* directory.
 sym links will automatically used instead if hard links do not work.
 
 ## Planned features
-**BG3 Deployer**  
+**BG3 Deployer**
 Similar to how the *LOOT Deployer* currently works, this will automatically add mods to the *modsettings.lsx* file in
 order to better support modding Baldurs Gate 3.
 
-**Bethesda base plugins**  
+**Bethesda base plugins**
 For Bethesda games like Skyrim, certain plugins are always loaded regardless of whether or not they are enabled
 in the *LOOT Deployer*. This includes master plugins like *Skyrim.esm* and creation club content. These files should not
 be listed by the *LOOT Deployer*.
 
-**Mod grouping**  
+**Mod grouping**
 Currently split mods and mod patches are treated as completely separate from each other. This
 makes it hard to see which mods belong together and also makes it harder to uninstall them all at once. Grouping them
 together in a tree view under the base mod will resolve this.
 
-**Installation rules**  
+**Installation rules**
 Adds user defined rules that can be toggled during mod installation. These rules allow moving or
 deleting files/ directories that match a certain pattern. This is intended to remove unnecessary files like screenshots and
 to resolve issues where parts of a mod would have to be moved manually, like *Nemesis* files when using *Pandora* in
 the case of Skyrim.
 
-**Config file detection**  
+**Config file detection**
 Many mods and games allow tweaking some settings via config files (often ending in *.ini*).
 This feature will add a new tab that lists all such files and offers a button to open them in the default editor. Rules for
 detecting these files will be set by users, like those for auto tags.
 
-**API support**  
+**API support**
 Support for automatically checking for updates and downloading mods from modding websites that
 provide this functionality like *Thunderstore* and *Gamebanana*.
 
-**Deployers for other games**  
+**Deployers for other games**
 If a game requires more specialized actions, like the current *LOOT Deployer* for
 Skyrim, in order to be modded, a deployer can be added if there is demand for it.

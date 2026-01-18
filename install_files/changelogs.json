@@ -2,6 +2,30 @@
   "versions":
   [
     {
+      "version" : "1.3.0-sp",
+      "date" : 1768753239,
+      "title" : "Life Support - initial release",
+      "changes" :
+      [
+        {
+          "type" : 0,
+          "short_description" : "Add support for single, non-archive files (PR #208)"
+        },
+        {
+          "type" : 1,
+          "short_description" : "Tweak branding/name to differentiate from the main Limo project"
+        },
+        {
+          "type" : 2,
+          "short_description" : "Fix libloot compatibility (PR #191)"
+        },
+        {
+          "type" : 2,
+          "short_description" : "Fix Skyrim VR loot deployer target path in steam app configs (PR #225)"
+        }
+      ]
+    },
+    {
       "version" : "1.2.2",
       "date" : 1746262543,
       "title" : "Minor FOMOD fix",
@@ -17,7 +41,7 @@
       "version" : "1.2.1",
       "date" : 1746216782,
       "title" : "Root level detection improvements",
-      "changes" : 
+      "changes" :
       [
         {
           "type" : 0,

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2024 Christian Münkel -->
+<component type="desktop-application">
+  <id>com.github.snazzypanda.limo</id>
+
+  <developer id="com.github.snazzypanda">
+    <name>SnazzyPanda (original dev: Christian Münkel)</name>
+  </developer>
+
+  <name>Limo</name>
+  <summary>Mod Manager</summary>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <description>
+    <p>
+      Limo is a general-purpose mod manager for games and other applications.
+      Built-in support for the Load Order Optimization Tool (LOOT) allows modding various Bethesda titles such as Skyrim or Fallout 4.
+    </p>
+    <p>Features:</p>
+      <ul>
+        <li>Multiple target directories per application</li>
+        <li>Automatic adaptation of mod file names to prevent issues with case mismatches</li>
+        <li>Auto-Tagging system for filtering</li>
+        <li>FOMOD support</li>
+        <li>Sort load order according to conflicts</li>
+        <li>Import installed games from Steam</li>
+        <li>Simple backup system</li>
+        <li>LOOT integration</li>
+        <li>NexusMods API support</li>
+        <li>Baldur's Gate 3 support</li>
+    </ul>
+    <p>For a guide on how to set up Limo, refer to the GitHub wiki page.</p>
+  </description>
+
+  <url type="homepage">https://github.com/SnazzyPanda/limo</url>
+  <url type="vcs-browser">https://github.com/SnazzyPanda/limo</url>
+
+  <content_rating type="oars-1.1" />
+
+
+  <releases>
+    <release version="1.3.0-sp" date="2026-01-18">
+      <description>
+        <p>Life Support - initial release</p>
+        <ul>
+          <li>Fix libloot compatibility (PR #191)</li>
+          <li>Fix Skyrim VR loot deployer target path in steam app configs (PR #225)</li>
+          <li>Add support for single, non-archive files (PR #208)</li>
+		  <li>Tweak branding/name to differentiate from the main Limo project</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.2.2" date="2025-05-03">
+      <description>
+        <p>Minor FOMOD fix</p>
+        <ul>
+          <li>Fixed root level detection for FOMOD</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.2.1" date="2025-05-02">
+      <description>
+        <p>Root level detection improvements</p>
+        <ul>
+          <li>Added file pattern based root level auto detection</li>
+          <li>Fixed BG3 Deployer for patch 8</li>
+          <li>Fixed crash on mod import during root level detection</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.2" date="2025-04-12">
+      <description>
+        <p>Installation Improvements</p>
+        <ul>
+          <li>Added root level auto detection</li>
+          <li>Added LOOT support for OpenMW Plugin Deployer</li>
+          <li>Improved matching between downloaded mods and installed mods</li>
+          <li>Improved auto detection for mod name and version when downloading from NexusMods</li>
+          <li>Fixed OpenMW Archive Deployer not deploying when using Flatpak OpenMW</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.1" date="2025-01-23">
+      <description>
+        <p>Baldur's Gate 3 support</p>
+        <ul>
+          <li>Added deployer type for Baldur's Gate 3</li>
+          <li>Added changelog dialog</li>
+          <li>OpenMW Plugin Deployer now manages all .omw* files</li>
+          <li>Added support for groundcover plugins to OpenMW Plugin Deployer</li>
+          <li>Temporarily disabled LOOT support for OpenMW Plugin Deployer</li>
+          <li>Fixed broken symlinks not being detected</li>
+          <li>Fixed plugins.txt file generation for older Bethesda games</li>
+          <li>Fixed paths for Steam app icons</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.11" date="2024-12-26">
+      <description>
+        <p>OpenMW support</p>
+        <ul>
+          <li>Added two new deployer types for OpenMW</li>
+          <li>Fixed export/ import for reverse deployers</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.10" date="2024-12-20">
+      <description>
+        <p>QoL improvements</p>
+        <ul>
+          <li>Added a separate tab for tool logs</li>
+          <li>Added auto-fill for "Replace Mod" option</li>
+          <li>Added version auto-fill when downloading through Nexus dialog</li>
+          <li>Fixed issue with absolute paths in FOMOD files</li>
+          <li>Fixed potential issue with external tools issue caused by ".lmm_managed_dir" files</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.9" date="2024-11-21">
+      <description>
+        <p>Reworked tools section</p>
+        <ul>
+          <li>Reworked tools section</li>
+          <li>Added guided tool setup</li>
+          <li>Added overwrite order to file conflicts view</li>
+          <li>Added search by mod id function</li>
+          <li>Added source mod column to LOOT deployer</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.8.2" date="2024-11-12">
+      <description>
+        <p>Added Reverse Deployer</p>
+        <ul>
+          <li>Fixed a case of FOMOD installations failing</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.8.1" date="2024-11-11">
+      <description>
+        <p>Added Reverse Deployer</p>
+        <ul>
+          <li>Added new deployer type: Reverse Deployer</li>
+          <li>Added an Undeploy button</li>
+          <li>Improved detection of Steam library folders</li>
+          <li>Fixed busy status not ending when certain dialogs were closed</li>
+          <li>Fixed issue with removing profiles for backups</li>
+          <li>Fixed case of FOMOD installation failing</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.7" date="2024-09-19">
+      <description>
+        <p>Added per app Steam imports</p>
+        <ul>
+          <li>Import from Steam now supports specialized settings for Steam apps</li>
+          <li>Added default filesystem access to flatpak Steam</li>
+          <li>Fixed detection of flatpak Steam version</li>
+          <li>Reinstalling mods will no longer cause the new files to be shown as external changes</li>
+          <li>Fixed mods not being split when reinstalling them</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.6" date="2024-09-04">
+      <description>
+        <p>Added sym link support</p>
+        <ul>
+          <li>Added sym link deployment option</li>
+          <li>Added check for external changes before deployment</li>
+          <li>Fixed file conflicts window displaying incorrect winner</li>
+          <li>Reinstall from local now remembers mod name and version</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.5.1" date="2024-08-29">
+      <description>
+        <p>Added log files</p>
+        <ul>
+          <li>Logs are now being written to files</li>
+          <li>Fixed source directories not being displayed when editing a Loot Deployer</li>
+          <li>Fixed a crash when extracting large rar archives</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.5" date="2024-08-27">
+      <description>
+        <p>Various fixes</p>
+        <ul>
+          <li>FOMOD installer now always merges conflicting directories according to priority</li>
+          <li>FOMOD installer will no longer block the UI when no files have been installed</li>
+          <li>Moved all LOOT masterlist repositories to v0.21 branch</li>
+          <li>LOOT now uses the prelude file</li>
+          <li>Oblivion's Plugins.txt file is now capitalized</li>
+          <li>Error messages for failed hard links are now more detailed</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.4" date="2024-08-24">
+      <description>
+        <p>Minor fixes</p>
+        <ul>
+          <li>Added nxm mime type to desktop file</li>
+          <li>Fixed typos</li>
+        </ul>
+      </description>
+    </release>
+    <release version="1.0.3" date="2024-08-14">
+      <description>
+        Initial release
+      </description>
+    </release>
+  </releases>
+
+  <provides>
+    <mediatype>x-scheme-handler/nxm</mediatype>
+  </provides>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#a8e600</color>
+    <color type="primary" scheme_preference="dark">#709900</color>
+  </branding>
+
+  <launchable type="desktop-id">com.github.snazzypanda.limo.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://limo-app.github.io/limo/deployer.png</image>
+      <caption>Deployer with conflicts</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://limo-app.github.io/limo/mods.png</image>
+      <caption>Installed mods</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://limo-app.github.io/limo/app.png</image>
+      <caption>App overview</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://limo-app.github.io/limo/plugins.png</image>
+      <caption>Deployer using LOOT</caption>
+    </screenshot>
+  </screenshots>
+</component>
