@@ -21,7 +21,7 @@
         },
         {
           "type" : 2,
-          "short_description" : "Fix Skyrim VR loot deployer targeet path in steam app configs (PR #225)"
+          "short_description" : "Fix Skyrim VR loot deployer target path in steam app configs (PR #225)"
         }
       ]
     },

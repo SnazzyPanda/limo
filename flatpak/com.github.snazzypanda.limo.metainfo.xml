@@ -46,7 +46,7 @@
         <p>Life Support - initial release</p>
         <ul>
           <li>Fix libloot compatibility (PR #191)</li>
-          <li>Fix Skyrim VR loot deployer targeet path in steam app configs (PR #225)</li>
+          <li>Fix Skyrim VR loot deployer target path in steam app configs (PR #225)</li>
           <li>Add support for single, non-archive files (PR #208)</li>
 		  <li>Tweak branding/name to differentiate from the main Limo project</li>
         </ul>
