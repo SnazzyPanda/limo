@@ -7,6 +7,12 @@
 - You are free to open issues/pull-requests, but expect them to never be addressed.
 - I have very little C++ experience or knowledge. If any changes or fixes are made, expect them to be both janky and buggy.
 
+### Migrating from the io.github.limo_app.limo Flatpak
+
+To copy you existing setup, you will want to copy the `Limo.conf` file from `~/.var/app/io.github.limo_app.limo/config/Limo.conf` to `~/.var/app/com.github.snazzypanda.limo/config/Limo.conf`.
+
+⚠️ Some changes made in this project will allow you to do things that are incompatible with going back to the original Limo app!
+
 <hr>
 
 General purpose mod manager primarily developed for Linux with support for the [NexusMods](https://www.nexusmods.com/) API and [LOOT](https://loot.github.io/).
