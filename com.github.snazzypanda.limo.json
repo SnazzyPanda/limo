@@ -227,7 +227,8 @@
       [
         {
           "type": "archive",
-          "path": "dependencies/archives/yaml-cpp-0.8.0-merge-key-support.2.tar.gz"
+          "url": "https://github.com/loot/yaml-cpp/archive/0.8.0+merge-key-support.2.tar.gz",
+          "sha256": "e91779044cd4025ec10ed31986031031ef22ebce90a64cc8f85e7c7e95a1abc6"
         }
       ],
       "cleanup":
