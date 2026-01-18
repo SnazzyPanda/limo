@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Comment=Mod manager with LOOT integration
-Name=Limo
+Name=Limo (SP)
 Categories=Utility;FileTools;
 Icon=limo
 MimeType=x-scheme-handler/nxm;
