@@ -1,9 +1,9 @@
-<h1 align="center">Limo - <i>Life Support Edition</i> <img src="resources/logo.png" alt="logo" width="40"/></h1>
+<h1 align="center"><img src="resources/logo.png" alt="logo" width="40"/> Limo - <i>Life Support Edition</i></h1>
 
 <h2 style="text-align:center;">⚠️ Life Support ⚠️</h2>
 
 - Expect no additional support or changes.
-- Do not report any issues to the original [Limo repository](https://github.com/limo-app/limo) (unless you have verified it affects that project as well).
+- Do not report any issues you encounter using this app to the original [Limo repository](https://github.com/limo-app/limo) (unless you have verified it affects that project as well).
 - You are free to open issues/pull-requests, but expect them to never be addressed.
 - I have very little C++ experience or knowledge. If any changes or fixes are made, expect them to be both janky and buggy.
 
