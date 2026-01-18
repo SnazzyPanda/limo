@@ -1,0 +1,127 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 6c483fa..131af35 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -81,75 +81,57 @@ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+     find_package(TBB REQUIRED)
+ endif()
+ 
+-if(NOT DEFINED ESPLUGIN_URL)
+-    set(ESPLUGIN_URL "https://github.com/Ortham/esplugin/archive/refs/tags/6.1.3.tar.gz")
+-    set(ESPLUGIN_HASH "SHA256=d11373b9108036e8d8453ff77000ae2961f9d1243c99c42dd732dad0c83d8618")
+-endif()
+-
+ ExternalProject_Add(esplugin
+     PREFIX "external"
+-    URL ${ESPLUGIN_URL}
+-    URL_HASH ${ESPLUGIN_HASH}
++    URL "/run/build/libloot/6.1.3.tar.gz"
+     CONFIGURE_COMMAND ""
+     BUILD_IN_SOURCE 1
+     BUILD_COMMAND cargo build --release --config debug="limited" --manifest-path ffi/Cargo.toml ${RUST_TARGET_ARGS} &&
+         cbindgen ffi/ -o ffi/include/esplugin.hpp
+     COMMAND ${RUST_CLEANUP_COMMAND}
+     INSTALL_COMMAND ""
+-    BUILD_BYPRODUCTS "<SOURCE_DIR>/target/${RUST_TARGET}/release/${CMAKE_STATIC_LIBRARY_PREFIX}esplugin_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
++    BUILD_BYPRODUCTS "<SOURCE_DIR>/target/release/${CMAKE_STATIC_LIBRARY_PREFIX}esplugin_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
+ ExternalProject_Get_Property(esplugin SOURCE_DIR)
+ set(ESPLUGIN_INCLUDE_DIRS "${SOURCE_DIR}/ffi/include")
+-set(ESPLUGIN_LIBRARIES "${SOURCE_DIR}/target/${RUST_TARGET}/release/${CMAKE_STATIC_LIBRARY_PREFIX}esplugin_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
++set(ESPLUGIN_LIBRARIES "${SOURCE_DIR}/target/release/${CMAKE_STATIC_LIBRARY_PREFIX}esplugin_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
+ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+     set(ESPLUGIN_LIBRARIES ${ESPLUGIN_LIBRARIES} userenv ntdll)
+ else()
+     set(ESPLUGIN_LIBRARIES ${ESPLUGIN_LIBRARIES} dl)
+ endif()
+ 
+-if(NOT DEFINED LIBLOADORDER_URL)
+-    set(LIBLOADORDER_URL "https://github.com/Ortham/libloadorder/archive/refs/tags/18.4.0.tar.gz")
+-    set(LIBLOADORDER_HASH "SHA256=c83f1f48829e013f2634041b62fed8c4957fb7469a401250b3793953ed3c3d2c")
+-endif()
+-
+ ExternalProject_Add(libloadorder
+     PREFIX "external"
+-    URL ${LIBLOADORDER_URL}
+-    URL_HASH ${LIBLOADORDER_HASH}
++    URL "/run/build/libloot/18.4.0.tar.gz"
+     CONFIGURE_COMMAND ""
+     BUILD_IN_SOURCE 1
+     BUILD_COMMAND cargo build --release --config debug="limited" --manifest-path ffi/Cargo.toml ${RUST_TARGET_ARGS} &&
+         cbindgen ffi/ -l c++ -o ffi/include/libloadorder.hpp
+     COMMAND ${RUST_CLEANUP_COMMAND}
+     INSTALL_COMMAND ""
+-    BUILD_BYPRODUCTS "<SOURCE_DIR>/target/${RUST_TARGET}/release/${CMAKE_STATIC_LIBRARY_PREFIX}loadorder_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
++    BUILD_BYPRODUCTS "<SOURCE_DIR>/target/release/${CMAKE_STATIC_LIBRARY_PREFIX}loadorder_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
+ ExternalProject_Get_Property(libloadorder SOURCE_DIR)
+ set(LIBLOADORDER_INCLUDE_DIRS "${SOURCE_DIR}/ffi/include")
+-set(LIBLOADORDER_LIBRARIES "${SOURCE_DIR}/target/${RUST_TARGET}/release/${CMAKE_STATIC_LIBRARY_PREFIX}loadorder_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
++set(LIBLOADORDER_LIBRARIES "${SOURCE_DIR}/target/release/${CMAKE_STATIC_LIBRARY_PREFIX}loadorder_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
+ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+     set(LIBLOADORDER_LIBRARIES ${LIBLOADORDER_LIBRARIES} ntdll propsys userenv windowsapp)
+ else()
+     set(LIBLOADORDER_LIBRARIES ${LIBLOADORDER_LIBRARIES} dl)
+ endif()
+ 
+-if(NOT DEFINED LOOT_CONDITION_INTERPRETER_URL)
+-    set(LOOT_CONDITION_INTERPRETER_URL "https://github.com/loot/loot-condition-interpreter/archive/refs/tags/5.3.2.tar.gz")
+-    set(LOOT_CONDITION_INTERPRETER_HASH "SHA256=11a2c62898f6450cdae6db607c63fd7898f62bf67d4874b7ceed3d3693331af3")
+-endif()
+-
+ ExternalProject_Add(loot-condition-interpreter
+     PREFIX "external"
+-    URL ${LOOT_CONDITION_INTERPRETER_URL}
+-    URL_HASH ${LOOT_CONDITION_INTERPRETER_HASH}
++    URL "/run/build/libloot/5.3.2.tar.gz"
+     CONFIGURE_COMMAND ""
+     BUILD_IN_SOURCE 1
+     BUILD_COMMAND cargo build --release --config debug="limited" --manifest-path ffi/Cargo.toml ${RUST_TARGET_ARGS} &&
+         cbindgen ffi/ -o ffi/include/loot_condition_interpreter.h
+     COMMAND ${RUST_CLEANUP_COMMAND}
+     INSTALL_COMMAND ""
+-    BUILD_BYPRODUCTS "<SOURCE_DIR>/target/${RUST_TARGET}/release/${CMAKE_STATIC_LIBRARY_PREFIX}loot_condition_interpreter_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
++    BUILD_BYPRODUCTS "<SOURCE_DIR>/target/release/${CMAKE_STATIC_LIBRARY_PREFIX}loot_condition_interpreter_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
+ ExternalProject_Get_Property(loot-condition-interpreter SOURCE_DIR)
+ set(LCI_INCLUDE_DIRS "${SOURCE_DIR}/ffi/include")
+-set(LCI_LIBRARIES "${SOURCE_DIR}/target/${RUST_TARGET}/release/${CMAKE_STATIC_LIBRARY_PREFIX}loot_condition_interpreter_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
++set(LCI_LIBRARIES "${SOURCE_DIR}/target/release/${CMAKE_STATIC_LIBRARY_PREFIX}loot_condition_interpreter_ffi${CMAKE_STATIC_LIBRARY_SUFFIX}")
+ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+     set(LCI_LIBRARIES ${LCI_LIBRARIES} userenv)
+ else()
+@@ -158,15 +140,13 @@ endif()
+ 
+ FetchContent_Declare(
+     fmt
+-    URL "https://github.com/fmtlib/fmt/archive/refs/tags/11.2.0.tar.gz"
+-    URL_HASH "SHA256=bc23066d87ab3168f27cef3e97d545fa63314f5c79df5ea444d41d56f962c6af"
++    URL "/run/build/libloot/11.2.0.tar.gz"
+     FIND_PACKAGE_ARGS)
+ 
+ set(SPDLOG_FMT_EXTERNAL ON)
+ FetchContent_Declare(
+     spdlog
+-    URL "https://github.com/gabime/spdlog/archive/v1.15.3.tar.gz"
+-    URL_HASH "SHA256=15a04e69c222eb6c01094b5c7ff8a249b36bb22788d72519646fb85feb267e67"
++    URL "/run/build/libloot/v1.15.3.tar.gz"
+     FIND_PACKAGE_ARGS)
+ 
+ set(YAML_MSVC_SHARED_RT ON)
+@@ -178,15 +158,16 @@ set(YAML_CPP_BUILD_TESTS OFF)
+ set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
+ FetchContent_Declare(
+     yaml-cpp
+-    URL "https://github.com/loot/yaml-cpp/archive/0.8.0+merge-key-support.3.tar.gz"
+-    URL_HASH "SHA256=e2067f1ab8f658aeb8a8795fd0e06a753b4150b9352cae047280e659078dd44f")
++    URL "/run/build/libloot/0.8.0+merge-key-support.3.tar.gz")
+ 
+ # Set BUILD_SHARED_LIBS=OFF to prevent fmt and spdlog from being built as shared
+ # libraries.
+ set(LIBLOOT_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+ set(BUILD_SHARED_LIBS OFF)
+ 
+-FetchContent_MakeAvailable(fmt spdlog yaml-cpp)
++FetchContent_MakeAvailable(fmt)
++FetchContent_MakeAvailable(spdlog)
++FetchContent_MakeAvailable(yaml-cpp)
+ 
+ # Restore the original value of BUILD_SHARED_LIBS.
+ set(BUILD_SHARED_LIBS ${LIBLOOT_BUILD_SHARED_LIBS})
