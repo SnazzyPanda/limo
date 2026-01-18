@@ -138,6 +138,22 @@ ctest --test-dir build
 doxygen src/lmm_Doxyfile
 ```
 
+### Building a Flatpak Locally
+
+To simplify the process, there is a `build-flatpak.sh` script to create a `.flatpak` file locally. To build the flatpak, you will need to have flatpak and flatpak-builder installed, as well as the following flatpak packages:
+
+- `org.kde.Sdk/x86_64/5.15-24.08`
+- `org.kde.Platform/x86_64/5.15-24.08`
+- `org.freedesktop.Sdk.Extension.llvm18/x86_64/24.08`
+- `org.freedesktop.Sdk.Extension.rust-stable/x86_64/24.08`
+
+You can use this command to get them all:
+```
+flatpak install flathub org.kde.Sdk/x86_64/5.15-24.08 org.kde.Platform/x86_64/5.15-24.08 org.freedesktop.Sdk.Extension.llvm18/x86_64/24.08 org.freedesktop.Sdk.Extension.rust-stable/x86_64/24.08
+```
+
+When successfully built, there should be a `.flatpak` under the `build/` directory, currently configured to be `build/com.github.snazzypanda.limo.flatpak`.
+
 ## Usage Notes
 
 ### Flatpak version of Limo
