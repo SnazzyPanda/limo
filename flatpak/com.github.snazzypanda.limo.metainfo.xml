@@ -2,17 +2,17 @@
 <!-- Copyright 2024 Christian Münkel -->
 <component type="desktop-application">
   <id>com.github.snazzypanda.limo</id>
-  
+
   <developer id="com.github.snazzypanda">
     <name>SnazzyPanda (original dev: Christian Münkel)</name>
   </developer>
-  
+
   <name>Limo</name>
   <summary>Mod Manager</summary>
-  
+
   <metadata_license>MIT</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  
+
   <description>
     <p>
       Limo is a general-purpose mod manager for games and other applications.
@@ -33,14 +33,25 @@
     </ul>
     <p>For a guide on how to set up Limo, refer to the GitHub wiki page.</p>
   </description>
-  
+
   <url type="homepage">https://github.com/SnazzyPanda/limo</url>
   <url type="vcs-browser">https://github.com/SnazzyPanda/limo</url>
-  
+
   <content_rating type="oars-1.1" />
-  
-  
+
+
   <releases>
+    <release version="1.3.0-sp" date="2026-01-18">
+      <description>
+        <p>Life Support - initial release</p>
+        <ul>
+          <li>Fix libloot compatibility (PR #191)</li>
+          <li>Fix Skyrim VR loot deployer targeet path in steam app configs (PR #225)</li>
+          <li>Add support for single, non-archive files (PR #208)</li>
+		  <li>Tweak branding/name to differentiate from the main Limo project</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.2.2" date="2025-05-03">
       <description>
         <p>Minor FOMOD fix</p>
@@ -201,16 +212,16 @@
       </description>
     </release>
   </releases>
-  
+
   <provides>
     <mediatype>x-scheme-handler/nxm</mediatype>
   </provides>
-  
+
   <branding>
     <color type="primary" scheme_preference="light">#a8e600</color>
     <color type="primary" scheme_preference="dark">#709900</color>
   </branding>
-  
+
   <launchable type="desktop-id">com.github.snazzypanda.limo.desktop</launchable>
   <screenshots>
     <screenshot type="default">
