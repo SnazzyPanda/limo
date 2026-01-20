@@ -66,15 +66,17 @@ longer active.
 
 ### Flatpak
 
-<a href='https://flathub.org/apps/io.github.limo_app.limo'>
-    <img width='240' alt='Download on Flathub' src='https://flathub.org/api/badge?locale=en'/>
-</a>
+Grab the latest .flatpak from the [releases page](https://github.com/SnazzyPanda/limo/releases). Once downloaded, you can install the file by running:
+```
+flatpak install filename.flatpak
+```
 
-### Arch Linux (via Arch User Repository)
+~~<https://flathub.org/apps/io.github.limo_app.limo>~~
 
-<a href='https://aur.archlinux.org/packages/limo-git'>
-	<img width='240' alt='Get on AUR' src='https://upload.wikimedia.org/wikipedia/commons/e/e8/Archlinux-logo-standard-version.png'/>
-</a>
+### ~~Arch Linux (via Arch User Repository)~~
+
+~~<https://aur.archlinux.org/packages/limo-git>~~
+
 
 ### Build from source
 
@@ -118,7 +120,7 @@ sudo apt install \
 #### Clone this repository:
 
 ```
-git clone https://github.com/limo-app/limo.git
+git clone https://github.com/SnazzyPanda/limo.git
 cd limo
 ```
 
@@ -155,7 +157,7 @@ doxygen src/lmm_Doxyfile
 
 ### Building a Flatpak Locally
 
-To simplify the process, there is a `build-flatpak.sh` script to create a `.flatpak` file locally. To build the flatpak, you will need to have flatpak and flatpak-builder installed, as well as the following flatpak packages:
+To simplify the process, there is a `build-flatpak.sh` script to create a `.flatpak` file locally. To build the flatpak, you will need to have `flatpak` and `flatpak-builder` installed, as well as the following flatpak packages:
 
 - `org.kde.Sdk/x86_64/5.15-24.08`
 - `org.kde.Platform/x86_64/5.15-24.08`
@@ -181,13 +183,14 @@ From version 1.0.7 onwards, Limo supports specialized deployer and auto tag impo
 --directory="/tool/directory/" protontricks-launch --appid [steamappid i.e., 489830 for Skyrim SE] tool.exe
 ```
 
-### AUR version of Limo
 
-The Flatpak version of Limo is the officially supported version. There is no reason to use the AUR version of Limo, unless you like the instant download initialization (not the download speed) when downloading via mod manager on NexusMods, and early access to new features such as Reverse Deployer (unreleased as of 1.0.7). If you decided to use the AUR version, please don't spam and harass the main developer.
+### ~~AUR version of Limo~~
 
-When you first use the AUR version of Limo, you'll notice that the UI is slightly different than the Flatpak version. ***Moreover, you'll notice that when importing games from steam such as Skyrim SE, the deployers are not pointing to the right directory, hence, one should read Limo's [Wiki](https://github.com/limo-app/limo/wiki) to properly configure them.***
+~~The Flatpak version of Limo is the officially supported version. There is no reason to use the AUR version of Limo, unless you like the instant download initialization (not the download speed) when downloading via mod manager on NexusMods, and early access to new features such as Reverse Deployer (unreleased as of 1.0.7). If you decided to use the AUR version, please don't spam and harass the main developer.~~
 
-#### Here's a quick glance of what deployer you should create and where it should point to.
+~~When you first use the AUR version of Limo, you'll notice that the UI is slightly different than the Flatpak version. ***Moreover, you'll notice that when importing games from steam such as Skyrim SE, the deployers are not pointing to the right directory, hence, one should read Limo's [Wiki](https://github.com/limo-app/limo/wiki) to properly configure them.***~~
+
+#### ~~Here's a quick glance of what deployer you should create and where it should point to.~~
 
 | Name    |     Deployer Type      |                                                       Target Directory                                            | Deployment Method |
 | ------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -195,9 +198,9 @@ When you first use the AUR version of Limo, you'll notice that the UI is slightl
 | Data    | Case Matching Deployer | ~/.local/share/Steam/steamapps/common/Skyrim Special Edition/Data                                                 | Anything          |
 | Plugins | Loot Deployer          | ~/.local/share/Steam/steamapps/compatdata/489830/pfx/drive_c/users/steamuser/AppData/Local/Skyrim Special Edition | Anything          |
 
-For GOG users of these games, just find the game's folder. It should be almost similar, except the prefix folder.
+~~For GOG users of these games, just find the game's folder. It should be almost similar, except the prefix folder.~~
 
-#### To add tools and run the executable directly to AUR version Limo, use:
+#### ~~To add tools and run the executable directly to AUR version Limo, use:~~
 
 ```
 cd "/tool/directory"; protontricks-launch --appid [steamappid i.e., 489830 for SkyrimSE] tool.exe
@@ -216,36 +219,36 @@ Skyrim SE, and move it to the *steam_app_configs* directory.
 **Note**: Deploy modes in this file will default to *hard link*, even if you are using sym links. When your configuration is imported by others,
 sym links will automatically used instead if hard links do not work.
 
-## Planned features
-**BG3 Deployer**
+## ~~Planned features~~
+~~**BG3 Deployer**
 Similar to how the *LOOT Deployer* currently works, this will automatically add mods to the *modsettings.lsx* file in
-order to better support modding Baldurs Gate 3.
+order to better support modding Baldurs Gate 3.~~
 
-**Bethesda base plugins**
+~~**Bethesda base plugins**
 For Bethesda games like Skyrim, certain plugins are always loaded regardless of whether or not they are enabled
 in the *LOOT Deployer*. This includes master plugins like *Skyrim.esm* and creation club content. These files should not
-be listed by the *LOOT Deployer*.
+be listed by the *LOOT Deployer*.~~
 
-**Mod grouping**
+~~**Mod grouping**
 Currently split mods and mod patches are treated as completely separate from each other. This
 makes it hard to see which mods belong together and also makes it harder to uninstall them all at once. Grouping them
-together in a tree view under the base mod will resolve this.
+together in a tree view under the base mod will resolve this.~~
 
-**Installation rules**
+~~**Installation rules**
 Adds user defined rules that can be toggled during mod installation. These rules allow moving or
 deleting files/ directories that match a certain pattern. This is intended to remove unnecessary files like screenshots and
 to resolve issues where parts of a mod would have to be moved manually, like *Nemesis* files when using *Pandora* in
-the case of Skyrim.
+the case of Skyrim.~~
 
-**Config file detection**
+~~**Config file detection**
 Many mods and games allow tweaking some settings via config files (often ending in *.ini*).
 This feature will add a new tab that lists all such files and offers a button to open them in the default editor. Rules for
-detecting these files will be set by users, like those for auto tags.
+detecting these files will be set by users, like those for auto tags.~~
 
-**API support**
+~~**API support**
 Support for automatically checking for updates and downloading mods from modding websites that
-provide this functionality like *Thunderstore* and *Gamebanana*.
+provide this functionality like *Thunderstore* and *Gamebanana*.~~
 
-**Deployers for other games**
+~~**Deployers for other games**
 If a game requires more specialized actions, like the current *LOOT Deployer* for
-Skyrim, in order to be modded, a deployer can be added if there is demand for it.
+Skyrim, in order to be modded, a deployer can be added if there is demand for it.~~
