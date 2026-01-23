@@ -14,11 +14,11 @@
  */
 struct EditProfileInfo
 {
-  /*! \brief The new name of the profile. */
-  std::string name;
-  /*! \brief The new app version of the profile. Used for FOMOD conditions. */
-  std::string app_version;
-  /*! \brief If a new profile is created and this is != -1: Copy all settings from source profile.
-   */
-  int source = -1;
+	/*! \brief The new name of the profile. */
+	std::string name;
+	/*! \brief The new app version of the profile. Used for FOMOD conditions. */
+	std::string app_version;
+	/*! \brief If a new profile is created and this is != -1: Copy all settings from source profile.
+	 */
+	int source = -1;
 };

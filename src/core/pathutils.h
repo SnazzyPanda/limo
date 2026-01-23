@@ -23,8 +23,8 @@ namespace path_utils
  * \return The target path in its actual case, if found.
  */
 std::optional<std::filesystem::path> pathExists(const std::filesystem::path& path_to_check,
-                                                const std::filesystem::path& base_path,
-                                                bool case_insensitive = true);
+	const std::filesystem::path& base_path,
+	bool case_insensitive = true);
 
 /*!
  * \brief Returns a string containing the given path in lower case.
@@ -39,8 +39,8 @@ std::string toLowerCase(const std::filesystem::path& path);
  * \param move If false: Copy files instead of moving them.
  */
 void moveFilesToDirectory(const std::filesystem::path& source,
-                          const std::filesystem::path& destination,
-                          bool move = true);
+	const std::filesystem::path& destination,
+	bool move = true);
 /*!
  * \brief Replaces all double backslash path separators with a forward slash.
  * \return The normalized path.
@@ -74,8 +74,8 @@ int getPathLength(const std::filesystem::path& path);
  * \return A pair of the removed components and the shortened path.
  */
 std::pair<std::filesystem::path, std::filesystem::path> removePathComponents(
-  const std::filesystem::path& path,
-  int depth);
+	const std::filesystem::path& path,
+	int depth);
 /*!
  * \brief Recursively renames all files at given source directory using given converter,
  * then copies the result to given destination directory.
@@ -85,8 +85,8 @@ std::pair<std::filesystem::path, std::filesystem::path> removePathComponents(
  * upper case.
  */
 void renameFiles(const std::filesystem::path& destination,
-                 const std::filesystem::path& source,
-                 std::function<unsigned char(unsigned char)> converter);
+	const std::filesystem::path& source,
+	std::function<unsigned char(unsigned char)> converter);
 /*!
  * \brief Recursively moves all files from source to destination, removes all
  * path components with depth < root_level.
@@ -95,8 +95,8 @@ void renameFiles(const std::filesystem::path& destination,
  * \param depth Minimum depth for path components to keep.
  */
 void moveFilesWithDepth(const std::filesystem::path& source,
-                        const std::filesystem::path& destination,
-                        int depth);
+	const std::filesystem::path& destination,
+	int depth);
 
 /*!
  * \brief Copies or moves files from source to dest.
@@ -105,8 +105,8 @@ void moveFilesWithDepth(const std::filesystem::path& source,
  * \param move If true: Move files, else: Recursively copy files.
  */
 void copyOrMoveFiles(const std::filesystem::path& source,
-                     const std::filesystem::path& destination,
-                     bool move);
+	const std::filesystem::path& destination,
+	bool move);
 /*!
  * \brief Checks whether the given path exists. This differs from std::filesystem::exists
  * in that true is returned even if path points to an invalid symlink.
